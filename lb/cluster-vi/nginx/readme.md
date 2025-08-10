@@ -20,8 +20,8 @@ req_extensions     = req_ext
 C  = IR
 ST = Tehran
 L  = Tehran
-O  = Dotin
-OU = Virtual Dep.
+O  = Dot
+OU = VI Dep.
 CN = *.test.local
 
 [req_ext]
@@ -46,7 +46,7 @@ openssl x509 -in wildcard.crt -text -noout | grep -A 1 "Subject Alternative Name
 
 ```
 openssl genrsa -out myCA.key 4096
-openssl req -x509 -new -nodes -key myCA.key -sha256 -days 3650 -out myCA.crt -subj "/C=IR/ST=Tehran/L=Tehran/O=Dotin/OU=Virtual Dep./CN=virtual Root CA"
+openssl req -x509 -new -nodes -key myCA.key -sha256 -days 3650 -out myCA.crt -subj "/C=IR/ST=Tehran/L=Tehran/O=Dot/OU=VI Dep./CN=virtual Root CA"
 ```
 
 ```
@@ -62,8 +62,8 @@ req_extensions     = req_ext
 C  = IR
 ST = Tehran
 L  = Tehran
-O  = Dotin
-OU = Virtual Dep.
+O  = Dot
+OU = VI Dep.
 CN = *.test.local
 
 [req_ext]
