@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    restart: always
+    volumes:
+      - ./data/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data/conf.d/:/etc/nginx/conf.d/
+      - ./data/certs/:/certs
+      - ./data/logs/:/var/log/nginx
