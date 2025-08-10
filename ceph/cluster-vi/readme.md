@@ -109,7 +109,9 @@ service_type: grafana
 spec:
   initial_admin_password: 567tyuGHjbnm
 EOF
+```
 
+```
 ceph orch apply -i grafana.yml
 ceph orch redeploy grafana
 ```

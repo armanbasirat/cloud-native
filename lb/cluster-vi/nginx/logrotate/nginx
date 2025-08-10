@@ -8,7 +8,7 @@
   notifempty
   sharedscripts
   postrotate
-    cd /app/workspace/nginx/
-	docker-compose restart
+    cd /app/workspace/nginx
+    docker-compose restart
   endscript
 }
