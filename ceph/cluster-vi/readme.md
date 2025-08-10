@@ -73,8 +73,14 @@ scp /app/workspace/ceph/tools/cephadm root@mon1:/root/workspace
 
 ## 11- on first mon node
 
+
 ```
-cd /root/workpspace
+mkdir workspace
+```
+
+## copy cephadm on workspace directory
+
+```
 chmod +x cephadm
 cp cephadm /usr/local/bin
 
