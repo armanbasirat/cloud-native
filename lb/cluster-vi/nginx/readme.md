@@ -1,7 +1,8 @@
+```
 apt install -y docker.io docker-compose
 cd /app/workspace/nginx
 docker-compose up -d
-
+```
 
 
 ## Create certificate without root CA
