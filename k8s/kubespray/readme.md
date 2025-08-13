@@ -63,7 +63,7 @@ echo 'kubespray ALL=(ALL:ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/kubespray
 ## on the operation server
 
 
-## 1- create ssh-keygen
+### create ssh-keygen
 
 ```
 ssh-keygen
@@ -110,8 +110,10 @@ python3 -m venv vi-kubespray-venv
 source vi-kubespray-venv/bin/activate
 ```
 
-#### index-url = <pypi-repository>/simple
-#### trusted-host = <nexus-ip>
+```
+# index-url = <pypi-repository>/simple
+# trusted-host = <nexus-ip>
+```
 
 ```
 cat <<EOF > vi-kubespray-venv/pip.conf
@@ -148,21 +150,23 @@ node6 ansible_host=<wr1>
 
 ## Step 05: change variable file: group_vars/all/containerd.yml
 
+```
+# Registries defined within containerd.
 
-#### containerd_registries_mirrors:
-####  - prefix: docker.io
-####    mirrors:
-####      - host: <docker-repository>
-####        capabilities: ["pull", "resolve"]
-####  - prefix: registry.k8s.io
-####    mirrors:
-####      - host: <k8s-repository>
-####        capabilities: ["pull", "resolve"]
-####  - prefix: quay.io
-####    mirrors:
-####      - host: <quay-repository>
-####        capabilities: ["pull", "resolve"]
-
+# containerd_registries_mirrors:
+#  - prefix: docker.io
+#    mirrors:
+#      - host: <docker-repository>
+#        capabilities: ["pull", "resolve"]
+#  - prefix: registry.k8s.io
+#    mirrors:
+#      - host: <k8s-repository>
+#        capabilities: ["pull", "resolve"]
+#  - prefix: quay.io
+#    mirrors:
+#      - host: <quay-repository>
+#        capabilities: ["pull", "resolve"]
+```
 
 
 ```
