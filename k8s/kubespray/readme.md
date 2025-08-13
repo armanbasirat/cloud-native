@@ -299,6 +299,25 @@ allow_unsupported_distribution_setup: false
 ## Step 05: change variable file: group_vars/all/containerd.yml
 
 ```
+# Registries defined within containerd.
+
+# containerd_registries_mirrors:
+#  - prefix: docker.io
+#    mirrors:
+#      - host: <docker-repository>
+#        capabilities: ["pull", "resolve"]
+#  - prefix: registry.k8s.io
+#    mirrors:
+#      - host: <k8s-repository>
+#        capabilities: ["pull", "resolve"]
+#  - prefix: quay.io
+#    mirrors:
+#      - host: <quay-repository>
+#        capabilities: ["pull", "resolve"]
+```
+
+
+```
 ---
 # Please see roles/container-engine/containerd/defaults/main.yml for more configuration options
 
@@ -346,32 +365,6 @@ allow_unsupported_distribution_setup: false
 
 # Registries defined within containerd.
 
-# containerd_registries_mirrors:
-#  - prefix: docker.io
-#    mirrors:
-#      - host: <docker-repository>
-#        capabilities: ["pull", "resolve"]
-#  - prefix: registry.k8s.io
-#    mirrors:
-#      - host: <k8s-repository>
-#        capabilities: ["pull", "resolve"]
-#  - prefix: quay.io
-#    mirrors:
-#      - host: <quay-repository>
-#        capabilities: ["pull", "resolve"]
-
-# containerd_max_container_log_line_size: 16384
-
-# containerd_registry_auth:
-#   - registry: 10.0.0.2:5000
-#     username: user
-#     password: pass
-```
-
-
-```
-# Registries defined within containerd.
-
 containerd_registries_mirrors:
   - prefix: docker.io
     mirrors:
@@ -385,6 +378,13 @@ containerd_registries_mirrors:
     mirrors:
       - host: http://192.168.106.12:8083
         capabilities: ["pull", "resolve"]
+
+# containerd_max_container_log_line_size: 16384
+
+# containerd_registry_auth:
+#   - registry: 10.0.0.2:5000
+#     username: user
+#     password: pass
 ```
 
 ## Step 06: change variable file: group_vars/all/etcd.yml
