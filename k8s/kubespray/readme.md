@@ -75,7 +75,7 @@ ssh-keygen
 ### install pip and venv
 
 ```
-sudo apt install -y python3-pip && python3.10-venv
+sudo apt install -y python3-pip python3.10-venv
 ```
 
 ### copy operation server pub key to all k8s nodes
