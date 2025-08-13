@@ -1,7 +1,5 @@
-![Kubernetes Logo](https://raw.githubusercontent.com/kubernetes-sigs/kubespray/master/docs/img/kubernetes-logo.png)
-
 <p align="center" width="100%">
-    <img src="https://github.com/kubernetes/kubernetes/blob/master/logo/logo_with_border.png"> 
+    <img width="15%" src="https://github.com/kubernetes/kubernetes/blob/master/logo/logo_with_border.png"> 
 </p>
 
 # Deploy a Production Ready Kubernetes Cluster with [Kubespray](https://github.com/kubernetes-sigs/kubespray/tree/master)
