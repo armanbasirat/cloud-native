@@ -2,7 +2,7 @@
     <img width="15%" src="https://ceph.io/assets/bitmaps/Ceph_Logo_Stacked_RGB_120411_fa.png"> 
 </p>
 
-# Deploy a Production Ready Ceph Cluster with Cephadm
+# Deploy a Production Ready Ceph Cluster with [Cephadm](https://docs.ceph.com/en/latest/cephadm/install/#cephadm-deploying-new-cluster)
 
 ## Step 01: prepare os and servers
 
