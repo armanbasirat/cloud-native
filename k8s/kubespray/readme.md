@@ -1168,8 +1168,8 @@ remove_anonymous_access: false
 ## Step 11: run ansible playbook
 
 ```
-ansible-playbook -i inventory/cluster-vi/inventory.ini cluster.yml --tags=download
-ansible-playbook -i inventory/cluster-vi/inventory.ini cluster.yml --become --become-user=root --user=kubespray
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --tags=download
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray
 ```
 
 ## Step 12: check the cluster and smoke test
