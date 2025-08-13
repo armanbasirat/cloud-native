@@ -46,7 +46,7 @@ network:
       nameservers:
        addresses:
          - <dns1>
-		     - <dns2>
+         - <dns2>
 ```
 
 
@@ -91,24 +91,24 @@ sudo systemctl restart docker
 ## Step 03: pull and tag images on all nodes
 
 ```
-docker pull <quay-proxy-repository>/ceph/ceph:v19
-docker pull <quay-proxy-repository>/ceph/grafana:10.4.0
-docker pull <quay-proxy-repository>/ceph/promtail:3.0.0
-docker pull <quay-proxy-repository>/ceph/loki:3.0.0
-docker pull <quay-proxy-repository>/prometheus/prometheus:v2.51.0
-docker pull <quay-proxy-repository>/prometheus/node-exporter:v1.7.0
-docker pull <quay-proxy-repository>/prometheus/alertmanager:v0.25.0
+docker pull <quay-repository>/ceph/ceph:v19
+docker pull <quay-repository>/ceph/grafana:10.4.0
+docker pull <quay-repository>/ceph/promtail:3.0.0
+docker pull <quay-repository>/ceph/loki:3.0.0
+docker pull <quay-repository>/prometheus/prometheus:v2.51.0
+docker pull <quay-repository>/prometheus/node-exporter:v1.7.0
+docker pull <quay-repository>/prometheus/alertmanager:v0.25.0
 ```
 
 
 ```
-docker tag <quay-proxy-repository>/ceph/ceph:v19  quay.io/ceph/ceph:v19
-docker tag <quay-proxy-repository>/ceph/grafana:10.4.0 quay.io/ceph/grafana:10.4.0
-docker tag <quay-proxy-repository>/ceph/promtail:3.0.0 quay.io/ceph/promtail:3.0.0
-docker tag <quay-proxy-repository>/ceph/loki:3.0.0 quay.io/ceph/loki:3.0.0
-docker tag <quay-proxy-repository>/prometheus/prometheus:v2.51.0 quay.io/prometheus/prometheus:v2.51.0
-docker tag <quay-proxy-repository>/prometheus/node-exporter:v1.7.0 quay.io/prometheus/node-exporter:v1.7.0
-docker tag <quay-proxy-repository>/prometheus/alertmanager:v0.25.0 quay.io/prometheus/alertmanager:v0.25.0
+docker tag <quay-repository>/ceph/ceph:v19  quay.io/ceph/ceph:v19
+docker tag <quay-repository>/ceph/grafana:10.4.0 quay.io/ceph/grafana:10.4.0
+docker tag <quay-repository>/ceph/promtail:3.0.0 quay.io/ceph/promtail:3.0.0
+docker tag <quay-repository>/ceph/loki:3.0.0 quay.io/ceph/loki:3.0.0
+docker tag <quay-repository>/prometheus/prometheus:v2.51.0 quay.io/prometheus/prometheus:v2.51.0
+docker tag <quay-repository>/prometheus/node-exporter:v1.7.0 quay.io/prometheus/node-exporter:v1.7.0
+docker tag <quay-repository>/prometheus/alertmanager:v0.25.0 quay.io/prometheus/alertmanager:v0.25.0
 ```
 
 
