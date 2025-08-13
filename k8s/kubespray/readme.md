@@ -47,7 +47,7 @@ network:
       nameservers:
        addresses:
          - <dns1>
-		     - <dns2>
+         - <dns2>
 ```
 
 ### create passwordless sudoer user on all k8s nodes
