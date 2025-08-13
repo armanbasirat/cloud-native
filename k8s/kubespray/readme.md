@@ -122,7 +122,7 @@ source <cluster-name>-kubespray-venv/bin/activate
 ```
 
 ```
-cat <<EOF > vi-kubespray-venv/pip.conf
+cat <<EOF > <cluster-name>-kubespray-venv/pip.conf
 [global]
 index-url = http://192.168.106.12:8081/repository/pypi.org/simple
 trusted-host = 192.168.106.12
