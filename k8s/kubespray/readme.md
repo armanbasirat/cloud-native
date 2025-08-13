@@ -78,16 +78,16 @@ sudo apt install -y python3-pip && python3.10-venv
 ### copy operation server pub key to all k8s nodes
 
 ```
-ssh-copy-id kubespray@<cp1>
-ssh-copy-id kubespray@<cp2>
-ssh-copy-id kubespray@<cp3>
-ssh-copy-id kubespray@<cp4>
-ssh-copy-id kubespray@<cp5>
+ssh-copy-id kubespray@<cp1-ip>
+ssh-copy-id kubespray@<cp2-ip>
+ssh-copy-id kubespray@<cp3-ip>
+ssh-copy-id kubespray@<cp4-ip>
+ssh-copy-id kubespray@<cp5-ip>
 
-ssh-copy-id kubespray@<wrkr1>
-ssh-copy-id kubespray@<wrkr2>
-ssh-copy-id kubespray@<wrkr3>
-ssh-copy-id kubespray@<wrkr4>
+ssh-copy-id kubespray@<wrkr1-ip>
+ssh-copy-id kubespray@<wrkr2-ip>
+ssh-copy-id kubespray@<wrkr3-ip>
+ssh-copy-id kubespray@<wrkr4-ip>
 ```
 
 
@@ -98,8 +98,8 @@ ssh-copy-id kubespray@<wrkr4>
 ```
 
 ```
-mkdir -p /root/workspace/cluster-vi
-cd /root/workspace/cluster-vi
+mkdir -p /root/workspace/k8s/<cluster-name>
+cd /root/workspace/k8s/<cluster-name>
 curl http://192.168.106.12:8081/repository/github.com/kubernetes-sigs/kubespray/archive/refs/tags/v2.28.0.zip -o kubespray-2.28.0.zip
 unzip kubespray-2.28.0.zip
 cd kubespray-2.28.0
@@ -108,8 +108,8 @@ cd kubespray-2.28.0
 ## Step 03: installing ansible and change inventory file
 
 ```
-python3 -m venv vi-kubespray-venv
-source vi-kubespray-venv/bin/activate
+python3 -m venv <cluster-name>-kubespray-venv
+source <cluster-name>-kubespray-venv/bin/activate
 ```
 
 ```
@@ -130,22 +130,22 @@ pip3 install -U -r requirements.txt
 ```
 
 ```
-cp -rfp inventory/sample inventory/cluster-vi
+cp -rfp inventory/sample inventory/<cluster-name>
 ```
 
 ```
 [kube_control_plane]
-node1 ansible_host=<cp1> etcd_member_name=etcd1
-node2 ansible_host=<cp2> etcd_member_name=etcd2
-node3 ansible_host=<cp3> etcd_member_name=etcd3
-node4 ansible_host=<cp4> etcd_member_name=etcd4
-node5 ansible_host=<cp5> etcd_member_name=etcd5
+node1 ansible_host=<cp1-ip> etcd_member_name=etcd1
+node2 ansible_host=<cp2-ip> etcd_member_name=etcd2
+node3 ansible_host=<cp3-ip> etcd_member_name=etcd3
+node4 ansible_host=<cp4-ip> etcd_member_name=etcd4
+node5 ansible_host=<cp5-ip> etcd_member_name=etcd5
 
 [etcd:children]
 kube_control_plane
 
 [kube_node]
-node6 ansible_host=<wr1>
+node6 ansible_host=<wrkr1-ip>
 ```
 
 ## Step 04: change variable file: group_vars/all/all.yml
