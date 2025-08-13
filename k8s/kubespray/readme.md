@@ -93,7 +93,9 @@ ssh-copy-id kubespray@<wrkr4>
 
 ## Step 02: get kubespray with specific tag:
 
-#### curl <github-repository>/kubernetes-sigs/kubespray/archive/refs/tags/v2.28.0.zip -o kubespray-2.28.0.zip
+```
+# curl <github-repository>/kubernetes-sigs/kubespray/archive/refs/tags/v2.28.0.zip -o kubespray-2.28.0.zip
+```
 
 ```
 mkdir -p /root/workspace/cluster-vi
@@ -324,5 +326,5 @@ nerdctl_download_url: "{{ files_repo }}/github.com/containerd/nerdctl/releases/d
 ansible-playbook -i inventory/cluster-vi/inventory.ini cluster.yml --become --become-user=root --user=kubespray
 ```
 
-## Step 12: access and check the kubernetes cluster and Smoke test
+## Step 12: check the cluster and smoke test
 
