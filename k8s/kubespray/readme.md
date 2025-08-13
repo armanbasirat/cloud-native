@@ -1,6 +1,6 @@
-# Deploy a Production Ready Kubernetes Cluster with Kubespray
-
 ![Kubernetes Logo](https://raw.githubusercontent.com/kubernetes-sigs/kubespray/master/docs/img/kubernetes-logo.png)
+
+# Deploy a Production Ready Kubernetes Cluster with [Kubespray](https://github.com/kubernetes-sigs/kubespray/tree/master)
 
 ## Step 01: preparing os and servers
 
