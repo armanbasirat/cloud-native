@@ -57,7 +57,7 @@ network:
 ### add nodes hostname in dns server or in /etc/hosts on all nodes
 
 ```
-cat <<EOF > /etc/hosts
+cat <<EOF | sudo tee -a /etc/hosts >/dev/null
 <mon1-ip> <mon1-hostname>
 <mon2-ip> <mon2-hostname>
 <mon3-ip> <mon3-hostname>
@@ -67,9 +67,7 @@ cat <<EOF > /etc/hosts
 <osd1-ip> <osd1-hostname>
 <osd2-ip> <osd2-hostname>
 <osd3-ip> <osd3-hostname>
-
 EOF
-
 ```
 
 ## Step 02: install and configure docker
