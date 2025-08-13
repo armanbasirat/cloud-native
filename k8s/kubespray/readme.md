@@ -103,7 +103,8 @@ ssh-copy-id kubespray@<wrkr4-ip>
 ```
 mkdir -p /root/workspace/k8s/<cluster-name>
 cd /root/workspace/k8s/<cluster-name>
-curl http://192.168.106.12:8081/repository/github.com/kubernetes-sigs/kubespray/archive/refs/tags/v2.28.0.zip -o kubespray-2.28.0.zip
+curl http://192.168.106.12:8081/repository/github.com/kubernetes-sigs/kubespray/archive/refs/tags/v2.28.0.zip \
+-o kubespray-2.28.0.zip
 unzip kubespray-2.28.0.zip
 cd kubespray-2.28.0
 ```
