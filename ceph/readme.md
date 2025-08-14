@@ -4,6 +4,16 @@
 
 # Deploy a Production Ready Ceph Cluster with [Cephadm](https://docs.ceph.com/en/latest/cephadm/install/#cephadm-deploying-new-cluster)
 
+
+#### Requirements
+
++ Python 3
++ Systemd
++ Podman or Docker for running containers
++ Time synchronization (such as Chrony or the legacy ntpd)
++ LVM2 for provisioning storage devices
+
+
 ## Step 01: prepare os and servers
 
 
@@ -152,7 +162,7 @@ cephadm shell -- ceph -s
 ceph status
 ```
 
-## Step 05: configuration grafana and set admin password
+## Step 05: configure grafana and set admin password
 
 ```
 cat <<EOF > grafana.yml
@@ -180,7 +190,7 @@ ssh-copy-id -f -i /etc/ceph/ceph.pub root@<osd2-ip>
 ssh-copy-id -f -i /etc/ceph/ceph.pub root@<osd3-ip>
 ```
 
-## step 06: Add others node
+## step 06: Add other nodes
 
 ```
 ceph orch host add <mon1-hostname> <mon1-ip> --labels _admin,mon,mgr
@@ -194,7 +204,7 @@ ceph orch host add <osd2-hostname> <osd2-ip> --labels osd,mds
 ceph orch host add <osd3-hostname> <osd3-ip> --labels osd,mds
 ```
 
-## step 07: create osd
+## step 07: create osds
 
 ```
 ceph orch daemon add osd <osd1-hostname>:/dev/sdc
@@ -254,4 +264,24 @@ settings:
 EOF
 
 ceph orch tuned-profile apply -i mon-tune-profile.yml
+```
+
+
+## step 11: access to ceph dashboard
+
+```
+https://<mon1-ip>:8443
+```
+
+## step 12: access to monitoring and observability
+
+```
+# grafana
+https://<mon1-ip>:3000
+
+# prometheus
+https://<mon1-ip>:9095
+
+# alertmanager
+https://<mon1-ip>:9093
 ```
