@@ -280,8 +280,8 @@ https://<mon1-ip>:8443
 https://<mon1-ip>:3000
 
 # prometheus
-https://<mon1-ip>:9095
+http://<mon1-ip>:9095
 
 # alertmanager
-https://<mon1-ip>:9093
+http://<mon1-ip>:9093
 ```
