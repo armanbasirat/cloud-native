@@ -154,7 +154,7 @@ node6 ansible_host=<wrkr1-ip>
 
 ## Step 04: change variable file: group_vars/all/all.yml
 
-```
+```diff
 ---
 ## Directory where the binaries will be installed
 bin_dir: /usr/local/bin
@@ -174,9 +174,7 @@ bin_dir: /usr/local/bin
 #   port: 1234
 
 ## Internal loadbalancers for apiservers
-<code style="color : greem">
 loadbalancer_apiserver_localhost: true
-</code>
 # valid options are "nginx" or "haproxy"
 loadbalancer_apiserver_type: nginx  # valid values "nginx" or "haproxy"
 
