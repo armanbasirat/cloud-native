@@ -1319,11 +1319,15 @@ calico_pool_blocksize: 26
 ## Step 12: run ansible playbook
 
 ```
-ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=download
-ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root \
+ --user=kubespray --tags=download
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root \
+ --user=kubespray
 
-ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=addons
-ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray -e unsafe_show_logs=true
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root \
+ --user=kubespray --tags=addons
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root \
+ --user=kubespray -e unsafe_show_logs=true
 ```
 
 ## Step 13: enable bash completion
