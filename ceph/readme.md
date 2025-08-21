@@ -67,7 +67,7 @@ network:
 ### add nodes hostname in dns server or in /etc/hosts on all nodes
 
 ```
-cat <<EOF | sudo tee -a /etc/hosts >/dev/null
+cat << 'EOF' | sudo tee -a /etc/hosts >/dev/null
 <mon1-ip> <mon1-hostname>
 <mon2-ip> <mon2-hostname>
 <mon3-ip> <mon3-hostname>
@@ -87,7 +87,7 @@ sudo apt install -y docker.io
 ```
 
 ```
-cat <<EOF > /etc/docker/daemon.json
+cat << 'EOF' > /etc/docker/daemon.json
 {
   "insecure-registries": ["0.0.0.0/0"],
   "live-restore": true
@@ -165,7 +165,7 @@ ceph status
 ## Step 05: configure grafana and set admin password
 
 ```
-cat <<EOF > grafana.yml
+cat << 'EOF' > grafana.yml
 service_type: grafana
 spec:
   initial_admin_password: P@ssw0rd
@@ -249,7 +249,7 @@ ceph auth get-or-create client.$user_name \
 ## step 10: create and apply os tuning profile
 
 ```
-cat <<EOF > mon-tune-profile.yml
+cat << 'EOF' > mon-tune-profile.yml
 profile_name: mon-tune-profile
 placement:
   hosts:

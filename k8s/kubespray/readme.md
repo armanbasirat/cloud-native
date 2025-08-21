@@ -117,13 +117,10 @@ source <cluster-name>-kubespray-venv/bin/activate
 ```
 
 ```
+cat << 'EOF' > <cluster-name>-kubespray-venv/pip.conf
+[global]
 # index-url = <pypi-repository>/simple
 # trusted-host = <nexus-ip>
-```
-
-```
-cat <<EOF > <cluster-name>-kubespray-venv/pip.conf
-[global]
 index-url = http://192.168.106.12:8081/repository/pypi.org/simple
 trusted-host = 192.168.106.12
 EOF
@@ -1324,11 +1321,24 @@ calico_pool_blocksize: 26
 ```
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=download
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray
+
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=addons
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray -e unsafe_show_logs=true
 ```
 
-## Step 13: check the cluster and smoke test
+## Step 13: enable bash completion
+
+```
+cat << 'EOF' >> ~/.bashrc
+source <(kubectl completion bash)
+alias k='kubectl'
+complete -o default -F __start_kubectl k
+EOF
+
+source ~/.bashrc
+```
+
+## Step 14: check the cluster and smoke test
 
 ```
 kubectl get nodes
