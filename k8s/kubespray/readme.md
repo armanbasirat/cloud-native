@@ -174,7 +174,9 @@ bin_dir: /usr/local/bin
 #   port: 1234
 
 ## Internal loadbalancers for apiservers
-+ loadbalancer_apiserver_localhost: true
+<code style="color : greem">
+loadbalancer_apiserver_localhost: true
+</code>
 # valid options are "nginx" or "haproxy"
 loadbalancer_apiserver_type: nginx  # valid values "nginx" or "haproxy"
 
