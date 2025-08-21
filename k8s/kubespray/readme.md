@@ -174,7 +174,7 @@ bin_dir: /usr/local/bin
 #   port: 1234
 
 ## Internal loadbalancers for apiservers
-loadbalancer_apiserver_localhost: true
++ loadbalancer_apiserver_localhost: true
 # valid options are "nginx" or "haproxy"
 loadbalancer_apiserver_type: nginx  # valid values "nginx" or "haproxy"
 
@@ -193,9 +193,9 @@ loadbalancer_apiserver_healthcheck_port: 8081
 # disable_host_nameservers: false
 
 ## Upstream dns servers
-# upstream_dns_servers:
-#   - 8.8.8.8
-#   - 8.8.4.4
+upstream_dns_servers:
+  - 8.8.8.8
+  - 8.8.4.4
 
 ## There are some changes specific to the cloud providers
 ## for instance we need to encapsulate packets with some network plugins
@@ -290,7 +290,7 @@ ntp_servers:
   - "3.pool.ntp.org iburst"
 
 ## Used to control no_log attribute
-unsafe_show_logs: false
+unsafe_show_logs: true
 
 ## If enabled it will allow kubespray to attempt setup even if the distribution is not supported. For unsupported distributions this can lead to unexpected failures in some cases.
 allow_unsupported_distribution_setup: false
@@ -607,13 +607,13 @@ local_volume_provisioner_enabled: false
 gateway_api_enabled: false
 
 # Nginx ingress controller deployment
-ingress_nginx_enabled: false
-# ingress_nginx_host_network: false
-# ingress_nginx_service_type: LoadBalancer
+ingress_nginx_enabled: true
+ingress_nginx_host_network: true
+# ingress_nginx_service_type: NodePort
 # ingress_nginx_service_annotations:
 #   example.io/loadbalancerIPs: 1.2.3.4
-# ingress_nginx_service_nodeport_http: 30080
-# ingress_nginx_service_nodeport_https: 30081
+ingress_nginx_service_nodeport_http: 30080
+ingress_nginx_service_nodeport_https: 30081
 ingress_publish_status_address: ""
 # ingress_nginx_nodeselector:
 #   kubernetes.io/os: "linux"
@@ -622,22 +622,24 @@ ingress_publish_status_address: ""
 #     operator: "Equal"
 #     value: ""
 #     effect: "NoSchedule"
-# ingress_nginx_namespace: "ingress-nginx"
-# ingress_nginx_insecure_port: 80
-# ingress_nginx_secure_port: 443
-# ingress_nginx_configmap:
-#   map-hash-bucket-size: "128"
-#   ssl-protocols: "TLSv1.2 TLSv1.3"
+ingress_nginx_namespace: "ingress-nginx"
+ingress_nginx_insecure_port: 80
+ingress_nginx_secure_port: 443
+ingress_nginx_configmap:
+  use-forwarded-headers: "true" 
+  ignore-invalid-headers: "false"
+  # map-hash-bucket-size: "128"
+  # ssl-protocols: "TLSv1.2 TLSv1.3"
 # ingress_nginx_configmap_tcp_services:
 #   9000: "default/example-go:8080"
 # ingress_nginx_configmap_udp_services:
 #   53: "kube-system/coredns:53"
 # ingress_nginx_extra_args:
 #   - --default-ssl-certificate=default/foo-tls
-# ingress_nginx_termination_grace_period_seconds: 300
-# ingress_nginx_class: nginx
+ingress_nginx_termination_grace_period_seconds: 300
+ingress_nginx_class: nginx
 # ingress_nginx_without_class: true
-# ingress_nginx_default: false
+ingress_nginx_default: false
 
 # ALB ingress controller deployment
 ingress_alb_enabled: false
@@ -648,8 +650,8 @@ ingress_alb_enabled: false
 # alb_ingress_aws_debug: "false"
 
 # Cert manager deployment
-cert_manager_enabled: false
-# cert_manager_namespace: "cert-manager"
+cert_manager_enabled: true
+cert_manager_namespace: "cert-manager"
 # cert_manager_tolerations:
 #   - key: node-role.kubernetes.io/control-plane
 #     effect: NoSchedule
@@ -1163,9 +1165,161 @@ kubeadm_patches: []
 remove_anonymous_access: false
 ```
 
-## Step 10: change variable file: group_vars/k8s_cluster/k8s-net-calico.yml
+## Step 10: change variable file: group_vars/k8s_cluster/kube_control_plane.yml
 
-## Step 11: run ansible playbook
+```
+# Reservation for control plane kubernetes components
+kube_memory_reserved: 512Mi
+kube_cpu_reserved: 200m
+kube_ephemeral_storage_reserved: 2Gi
+kube_pid_reserved: "1000"
+
+# Reservation for control plane host system
+system_memory_reserved: 256Mi
+system_cpu_reserved: 250m
+system_ephemeral_storage_reserved: 2Gi
+system_pid_reserved: "1000"
+```
+
+
+## Step 11: change variable file: group_vars/k8s_cluster/k8s-net-calico.yml
+
+```
+---
+# see roles/network_plugin/calico/defaults/main.yml
+
+# the default value of name
+calico_cni_name: k8s-pod-network
+
+## With calico it is possible to distributed routes with border routers of the datacenter.
+## Warning : enabling router peering will disable calico's default behavior ('node mesh').
+## The subnets of each nodes will be distributed by the datacenter router
+# peer_with_router: false
+
+# Enables Internet connectivity from containers
+# nat_outgoing: true
+# nat_outgoing_ipv6: true
+
+# Enables Calico CNI "host-local" IPAM plugin
+# calico_ipam_host_local: true
+
+# add default ippool name
+# calico_pool_name: "default-pool"
+
+# add default ippool blockSize
+calico_pool_blocksize: 26
+
+# add default ippool CIDR (must be inside kube_pods_subnet, defaults to kube_pods_subnet otherwise)
+# calico_pool_cidr: 1.2.3.4/5
+
+# add default ippool CIDR to CNI config
+# calico_cni_pool: true
+
+# Add default IPV6 IPPool CIDR. Must be inside kube_pods_subnet_ipv6. Defaults to kube_pods_subnet_ipv6 if not set.
+# calico_pool_cidr_ipv6: fd85:ee78:d8a6:8607::1:0000/112
+
+# Add default IPV6 IPPool CIDR to CNI config
+# calico_cni_pool_ipv6: true
+
+# Global as_num (/calico/bgp/v1/global/as_num)
+# global_as_num: "64512"
+
+# If doing peering with node-assigned asn where the globas does not match your nodes, you want this
+# to be true.  All other cases, false.
+# calico_no_global_as_num: false
+
+# You can set MTU value here. If left undefined or empty, it will
+# not be specified in calico CNI config, so Calico will use built-in
+# defaults. The value should be a number, not a string.
+# calico_mtu: 1500
+
+# Configure the MTU to use for workload interfaces and tunnels.
+# - If Wireguard is enabled, subtract 60 from your network MTU (i.e 1500-60=1440)
+# - Otherwise, if VXLAN or BPF mode is enabled, subtract 50 from your network MTU (i.e. 1500-50=1450)
+# - Otherwise, if IPIP is enabled, subtract 20 from your network MTU (i.e. 1500-20=1480)
+# - Otherwise, if not using any encapsulation, set to your network MTU (i.e. 1500)
+# calico_veth_mtu: 1440
+
+# Advertise Cluster IPs
+# calico_advertise_cluster_ips: true
+
+# Advertise Service External IPs
+# calico_advertise_service_external_ips:
+# - x.x.x.x/24
+# - y.y.y.y/32
+
+# Advertise Service LoadBalancer IPs
+# calico_advertise_service_loadbalancer_ips:
+# - x.x.x.x/24
+# - y.y.y.y/16
+
+# Choose data store type for calico: "etcd" or "kdd" (kubernetes datastore)
+# calico_datastore: "kdd"
+
+# Choose Calico iptables backend: "Legacy", "Auto" or "NFT"
+# calico_iptables_backend: "Auto"
+
+# Use typha (only with kdd)
+# typha_enabled: false
+
+# Generate TLS certs for secure typha<->calico-node communication
+# typha_secure: false
+
+# Scaling typha: 1 replica per 100 nodes is adequate
+# Number of typha replicas
+# typha_replicas: 1
+
+# Set max typha connections
+# typha_max_connections_lower_limit: 300
+
+# Set calico network backend: "bird", "vxlan" or "none"
+# bird enable BGP routing, required for ipip and no encapsulation modes
+# calico_network_backend: vxlan
+
+# IP in IP and VXLAN is mutually exclusive modes.
+# set IP in IP encapsulation mode: "Always", "CrossSubnet", "Never"
+# calico_ipip_mode: 'Never'
+
+# set VXLAN encapsulation mode: "Always", "CrossSubnet", "Never"
+# calico_vxlan_mode: 'Always'
+
+# set VXLAN port and VNI
+# calico_vxlan_vni: 4096
+# calico_vxlan_port: 4789
+
+# Enable eBPF mode
+# calico_bpf_enabled: false
+
+# If you want to use non default IP_AUTODETECTION_METHOD, IP6_AUTODETECTION_METHOD for calico node set this option to one of:
+# * can-reach=DESTINATION
+# * interface=INTERFACE-REGEX
+# see https://docs.projectcalico.org/reference/node/configuration
+# calico_ip_auto_method: "interface=eth.*"
+# calico_ip6_auto_method: "interface=eth.*"
+
+# Set FELIX_MTUIFACEPATTERN, Pattern used to discover the host’s interface for MTU auto-detection.
+# see https://projectcalico.docs.tigera.io/reference/felix/configuration
+# calico_felix_mtu_iface_pattern: "^((en|wl|ww|sl|ib)[opsx].*|(eth|wlan|wwan).*)"
+
+# Choose the iptables insert mode for Calico: "Insert" or "Append".
+# calico_felix_chaininsertmode: Insert
+
+# If you want use the default route interface when you use multiple interface with dynamique route (iproute2)
+# see https://docs.projectcalico.org/reference/node/configuration : FELIX_DEVICEROUTESOURCEADDRESS
+# calico_use_default_route_src_ipaddr: false
+
+# Enable calico traffic encryption with wireguard
+# calico_wireguard_enabled: false
+
+# Under certain situations liveness and readiness probes may need tunning
+# calico_node_livenessprobe_timeout: 10
+# calico_node_readinessprobe_timeout: 10
+
+# Calico apiserver (only with kdd)
+# calico_apiserver_enabled: false
+```
+
+## Step 12: run ansible playbook
 
 ```
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=download
@@ -1173,7 +1327,7 @@ ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become 
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray -e unsafe_show_logs=true
 ```
 
-## Step 12: check the cluster and smoke test
+## Step 13: check the cluster and smoke test
 
 ```
 kubectl get nodes
@@ -1183,4 +1337,3 @@ kubectl top nodes
 kubectl create deployment nginx --image=nginx
 
 ```
-
