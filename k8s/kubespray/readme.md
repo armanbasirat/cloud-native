@@ -298,7 +298,7 @@ allow_unsupported_distribution_setup: false
 
 ## Step 05: change variable file: group_vars/all/containerd.yml
 
-```
+```diff
 # Registries defined within containerd.
 
 # containerd_registries_mirrors:
@@ -389,7 +389,7 @@ containerd_registries_mirrors:
 
 ## Step 06: change variable file: group_vars/all/etcd.yml
 
-```
+```diff
 ---
 ## Directory where etcd data stored
 etcd_data_dir: /var/lib/etcd
@@ -412,7 +412,7 @@ etcd_listen_metrics_urls: "http://0.0.0.0:2381"
 
 ## Step 07: change variable file: group_vars/all/offline.yml
 
-```
+```diff
 ---
 ## Global Offline settings
 ### Private Container Image Registry
@@ -535,7 +535,7 @@ nerdctl_download_url: "{{ files_repo }}/github.com/containerd/nerdctl/releases/d
 
 ## Step 08: change variable file: group_vars/k8s_cluster/addons.yml
 
-```
+```diff
 ---
 # Kubernetes dashboard
 # RBAC required. see docs/getting-started.md for access details.
@@ -790,7 +790,7 @@ node_feature_discovery_enabled: false
 
 ## Step 09: change variable file: group_vars/k8s_cluster/k8s-cluster.yml
 
-```
+```diff
 ---
 # Kubernetes configuration dirs and system namespace.
 # Those are where all the additional config stuff goes
@@ -1167,7 +1167,7 @@ remove_anonymous_access: false
 
 ## Step 10: change variable file: group_vars/k8s_cluster/kube_control_plane.yml
 
-```
+```diff
 # Reservation for control plane kubernetes components
 kube_memory_reserved: 512Mi
 kube_cpu_reserved: 200m
@@ -1184,7 +1184,7 @@ system_pid_reserved: "1000"
 
 ## Step 11: change variable file: group_vars/k8s_cluster/k8s-net-calico.yml
 
-```
+```diff
 ---
 # see roles/network_plugin/calico/defaults/main.yml
 
@@ -1324,6 +1324,7 @@ calico_pool_blocksize: 26
 ```
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=download
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray
+ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray --tags=addons
 ansible-playbook -i inventory/<cluster-name>/inventory.ini cluster.yml --become --become-user=root --user=kubespray -e unsafe_show_logs=true
 ```
 
@@ -1334,6 +1335,6 @@ kubectl get nodes
 kubectl get pods -n kube-system
 kubectl top nodes
 
-kubectl create deployment nginx --image=nginx
+kubectl create deployment nginx --image=nginx --replicas=5
 
 ```
