@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    image: 10.2.217.9:8082/nginx:alpine3.20
+    image: 192.168.106.12:8082/nginx:alpine3.20
     container_name: nginx
     ports:
       - 80:80
