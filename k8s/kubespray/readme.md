@@ -1352,3 +1352,15 @@ kubectl top nodes
 kubectl create deployment nginx --image=nginx --replicas=5
 
 ```
+
+## Step 15: set label on nodes and taint nodes
+
+```
+kubectl label nodes <cp-node> node-role.kubernetes.io/controlplane=true
+kubectl label nodes <cp-node> node-role.kubernetes.io/etcd=true
+
+kubectl taint nodes <cp-node> node-role.kubernetes.io/controlplane=true:NoSchedule
+kubectl taint nodes <cp-node> node-role.kubernetes.io/etcd=true:NoExecute
+
+kubectl label nodes <wr-node> node-role.kubernetes.io/worker=true
+```
