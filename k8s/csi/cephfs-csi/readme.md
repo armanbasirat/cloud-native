@@ -1,3 +1,8 @@
+# Deploy cephfs-csi
+
+## Step 01: edit values.yaml
+
+
 ```diff
 # csiConfig:
 #   - clusterID: "<ceph-cluster-id>"
@@ -40,6 +45,8 @@
 #   userID: k8s-<cluster-name>-cephfs
 #   userKey: <Ceph auth key corresponding to the userID above>
 ```
+
+## Step 02: deploy with helm
 
 ```diff
 helm upgrade --install ceph-csi-cephfs ceph-csi-cephfs-3.14.2 \
