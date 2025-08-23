@@ -1069,6 +1069,21 @@ system_ephemeral_storage_reserved: 2Gi
 # eviction_hard: {}
 # eviction_hard_control_plane: {}
 
+eviction_hard:
+  memory.available: "2Gi"
+  nodefs.available: "10%"
+  imagefs.available: "10%"
+  nodefs.inodesFree: "10%"
+  imagefs.inodesFree: "10%"
+
+eviction_hard_control_plane:
+  memory.available: "512Mi"
+  nodefs.available: "10%"
+  imagefs.available: "10%"
+  nodefs.inodesFree: "10%"
+  imagefs.inodesFree: "10%"
+
+
 # An alternative flexvolume plugin directory
 # kubelet_flexvolumes_plugins_dir: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
 
