@@ -220,7 +220,7 @@ ceph osd ls
 ```
 cat << 'EOF' > mds.yml
 service_type: mds
-service_id: resalat
+service_id: <service-id>
 placement:
   count: 3
   label: mds
@@ -248,7 +248,7 @@ ceph fs subvolumegroup k8s-<cluster-name>-fs ls
 ```
 
 
-## step 09: create user for k8s
+## step 10: create user for k8s
 
 
 ```
