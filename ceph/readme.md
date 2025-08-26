@@ -221,8 +221,13 @@ ceph osd ls
 ```
 ceph osd pool create k8s-<cluster-name>-cephfs-data
 ceph osd pool create k8s-<cluster-name>-cephfs-metadata
+ceph osd pool ls
+
 ceph fs new k8s-<cluster-name>-fs k8s-<cluster-name>-cephfs-metadata k8s-<cluster-name>-cephfs-data
+ceph fs ls
+
 ceph fs subvolumegroup create k8s-<cluster-name>-fs k8s-<cluster-name>-svg
+ceph fs subvolumegroup k8s-<cluster-name>-fs ls
 ```
 
 ## step 08: create pool and filesystem
@@ -237,6 +242,9 @@ placement:
 EOF
 
 ceph orch apply -i mds.yaml
+
+
+ceph orch ls | grep -i mds
 ```
 
 
