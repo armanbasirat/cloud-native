@@ -242,7 +242,7 @@ ceph fs new k8s-<cluster-name>-fs k8s-<cluster-name>-cephfs-metadata k8s-<cluste
 ceph fs ls
 
 ceph fs subvolumegroup create k8s-<cluster-name>-fs k8s-<cluster-name>-svg
-ceph fs subvolumegroup k8s-<cluster-name>-fs ls
+ceph fs subvolumegroup ls k8s-<cluster-name>-fs
 ```
 
 
