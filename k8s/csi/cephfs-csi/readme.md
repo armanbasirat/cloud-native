@@ -7,11 +7,11 @@
 # csiConfig:
 #   - clusterID: "<ceph-cluster-id>"
 #     monitors:
-#       - "<mon1-ip:6789>"
-#       - "<mon2-ip:6789>"
-#       - "<mon3-ip:6789>"
-#       - "<mon4-ip:6789>"
-#       - "<mon5-ip:6789>"
+#       - "<mon1-ip>:6789"
+#       - "<mon2-ip>:6789"
+#       - "<mon3-ip>:6789"
+#       - "<mon4-ip>:6789"
+#       - "<mon5-ip>:6789"
 #     cephFS:
 #       subvolumeGroup: "k8s-<cluster-name>-svg"
 ```

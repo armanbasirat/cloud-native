@@ -207,14 +207,12 @@ ceph orch host add <osd3-hostname> <osd3-ip> --labels osd,mds
 ## step 07: create osds
 
 ```
-ceph orch daemon add osd <osd1-hostname>:/dev/sdc
-ceph orch daemon add osd <osd1-hostname>:/dev/sdd
+ceph orch daemon add osd <osd1-hostname>:/dev/sdX
+ceph orch daemon add osd <osd2-hostname>:/dev/sdX
+ceph orch daemon add osd <osd3-hostname>:/dev/sdX
 
-ceph orch daemon add osd <osd2-hostname>:/dev/sdc
-ceph orch daemon add osd <osd2-hostname>:/dev/sdd
-
-ceph orch daemon add osd <osd3-hostname>:/dev/sdc
-ceph orch daemon add osd <osd3-hostname>:/dev/sdd
+ceph osd tree
+ceph osd ls
 ```
 
 ## step 08: create pool and filesystem
