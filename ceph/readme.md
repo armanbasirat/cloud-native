@@ -227,8 +227,6 @@ placement:
 EOF
 
 ceph orch apply -i mds.yaml
-
-
 ceph orch ls | grep -i mds
 ```
 
