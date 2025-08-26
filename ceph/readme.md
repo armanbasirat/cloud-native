@@ -225,6 +225,21 @@ ceph fs new k8s-<cluster-name>-fs k8s-<cluster-name>-cephfs-metadata k8s-<cluste
 ceph fs subvolumegroup create k8s-<cluster-name>-fs k8s-<cluster-name>-svg
 ```
 
+## step 08: create pool and filesystem
+
+```
+cat << 'EOF' > mds.yml
+service_type: mds
+service_id: resalat
+placement:
+  count: 3
+  label: mds
+EOF
+
+ceph orch apply -i mds.yaml
+```
+
+
 ## step 09: create user for k8s
 
 
@@ -244,7 +259,7 @@ ceph auth get-or-create client.$user_name \
   mon "allow r fsname=$fs_name"
 ```
 
-## step 10: create and apply os tuning profile
+## step 11: create and apply os tuning profile
 
 ```
 cat << 'EOF' > mon-tune-profile.yml
@@ -265,7 +280,7 @@ ceph orch tuned-profile apply -i mon-tune-profile.yml
 ```
 
 
-## step 11: access to ceph dashboard
+## step 12: access to ceph dashboard
 
 ```
 https://<mon1-ip>:8443
