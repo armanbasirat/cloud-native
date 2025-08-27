@@ -193,15 +193,15 @@ ssh-copy-id -f -i /etc/ceph/ceph.pub root@<osd3-ip>
 ## step 06: Add other nodes
 
 ```
-ceph orch host add <mon1-hostname> <mon1-ip> --labels _admin,mon,mgr
-ceph orch host add <mon2-hostname> <mon2-ip> --labels _admin,mon,mgr
-ceph orch host add <mon3-hostname> <mon3-ip> --labels _admin,mon,mgr
-ceph orch host add <mon4-hostname> <mon4-ip> --labels _admin,mon,mgr
-ceph orch host add <mon5-hostname> <mon5-ip> --labels _admin,mon,mgr
+ceph orch host add <mon1-hostname> <mon1-ip> --labels _admin,mon,mgr,mds
+ceph orch host add <mon2-hostname> <mon2-ip> --labels _admin,mon,mgr,mds
+ceph orch host add <mon3-hostname> <mon3-ip> --labels _admin,mon,mgr,mds
+ceph orch host add <mon4-hostname> <mon4-ip> --labels _admin,mon,mgr,mds
+ceph orch host add <mon5-hostname> <mon5-ip> --labels _admin,mon,mgr,mds
 
-ceph orch host add <osd1-hostname> <osd1-ip> --labels osd,mds
-ceph orch host add <osd2-hostname> <osd2-ip> --labels osd,mds
-ceph orch host add <osd3-hostname> <osd3-ip> --labels osd,mds
+ceph orch host add <osd1-hostname> <osd1-ip> --labels osd
+ceph orch host add <osd2-hostname> <osd2-ip> --labels osd
+ceph orch host add <osd3-hostname> <osd3-ip> --labels osd
 ```
 
 ## step 07: create osds
@@ -277,6 +277,9 @@ placement:
     - <mon3>
     - <mon4>
     - <mon5>
+    - <osd1>
+    - <osd2>
+    - <osd3>
 settings:
   fs.file-max: 1000000
   vm.swappiness: '13'

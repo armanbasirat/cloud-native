@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: net-tools
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: net-tools
+  namespace: net-tools
+spec:
+  selector:
+    matchLabels:
+      app: net-tools
+  template:
+    metadata:
+      labels:
+        app: net-tools
+      namespace: net-tools
+    spec:
+      containers:
+        - image: wbitt/network-multitool
+          name: net-tools
