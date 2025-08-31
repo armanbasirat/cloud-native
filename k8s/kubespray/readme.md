@@ -303,14 +303,17 @@ allow_unsupported_distribution_setup: false
 #    mirrors:
 #      - host: <docker-repository>
 #        capabilities: ["pull", "resolve"]
+#        skip_verify: false
 #  - prefix: registry.k8s.io
 #    mirrors:
 #      - host: <k8s-repository>
 #        capabilities: ["pull", "resolve"]
+#        skip_verify: false
 #  - prefix: quay.io
 #    mirrors:
 #      - host: <quay-repository>
 #        capabilities: ["pull", "resolve"]
+#        skip_verify: false
 ```
 
 
@@ -367,14 +370,17 @@ containerd_registries_mirrors:
     mirrors:
       - host: http://192.168.106.12:8082
         capabilities: ["pull", "resolve"]
+        skip_verify: false
   - prefix: registry.k8s.io
     mirrors:
       - host: http://192.168.106.12:8084
         capabilities: ["pull", "resolve"]
+        skip_verify: false
   - prefix: quay.io
     mirrors:
       - host: http://192.168.106.12:8083
         capabilities: ["pull", "resolve"]
+        skip_verify: false
 
 # containerd_max_container_log_line_size: 16384
 
