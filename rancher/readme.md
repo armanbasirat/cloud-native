@@ -1,5 +1,5 @@
 <p align="center" width="100%">
-    <img width="15%" src="https://ranchermanager.docs.rancher.com/img/rancher-logo-horiz-color.svg"> 
+    <img width="30%" src="https://ranchermanager.docs.rancher.com/img/rancher-logo-horiz-color.svg"> 
 </p>
 
 # Install [Rancher](https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster) on a Kubernetes Cluster
