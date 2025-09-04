@@ -260,36 +260,13 @@ svg_name=k8s-<cluster-name>-svg
 ```
 ceph auth get-or-create client.$user_name \
   mgr "allow rw" \
-  osd "allow rwx tag cephfs metadata=$metadata_name, allow rw tag cephfs data=$data_name" \
+  osd "allow rwx, allow rw tag cephfs data=$data_name" \
   mds "allow r fsname=$fs_name path=/volumes, allow rws fsname=$fs_name path=/volumes/$svg_name" \
   mon "allow r fsname=$fs_name"
 ```
 
-## step 11: create and apply os tuning profile
 
-```
-cat << 'EOF' > mon-tune-profile.yml
-profile_name: mon-tune-profile
-placement:
-  hosts:
-    - <mon1>
-    - <mon2>
-    - <mon3>
-    - <mon4>
-    - <mon5>
-    - <osd1>
-    - <osd2>
-    - <osd3>
-settings:
-  fs.file-max: 1000000
-  vm.swappiness: '13'
-EOF
-
-ceph orch tuned-profile apply -i mon-tune-profile.yml
-```
-
-
-## step 12: access to ceph dashboard
+## step 11: access to ceph dashboard
 
 ```
 https://<mon1-ip>:8443

@@ -4,16 +4,19 @@
 
 
 ```diff
-# csiConfig:
-#   - clusterID: "<ceph-cluster-id>"
-#     monitors:
-#       - "<mon1-ip>:6789"
-#       - "<mon2-ip>:6789"
-#       - "<mon3-ip>:6789"
-#       - "<mon4-ip>:6789"
-#       - "<mon5-ip>:6789"
-#     cephFS:
-#       subvolumeGroup: "k8s-<cluster-name>-svg"
+csiConfig:
+  [{
+     "cephFS": {
+       "subvolumeGroup": "k8s-<cluster-name>-svg"
+     },
+     "clusterID": "<ceph-cluster-id>",
+     "monitors": [
+        "<mon1-ip>:6789",
+        "<mon1-ip>:6789",
+        "<mon1-ip>:6789",
+        "<mon1-ip>:6789"
+     ]
+  }]
 ```
 
 ```diff
@@ -52,11 +55,17 @@
 helm upgrade --install ceph-csi-cephfs ceph-csi-cephfs-3.14.2 \
   --namespace ceph-csi-cephfs \
   --create-namespace
+
+helm ls -n ceph-csi-cephfs
+```
+
+```diff
+kubectl -n ceph-csi-cephfs get pods
 ```
 
 ## Step 02: deploy test nginx app with cephfs pvc
 
-```
+```diff
 cat << 'EOF' > cephfs-deployment.yml
 ---
 apiVersion: v1
@@ -114,6 +123,9 @@ spec:
 EOF
 ```
 
-```
+```diff
 kubectl apply -f cephfs-deployment.yml
+
+kubectl get pods
+kubectl get pvc
 ```
