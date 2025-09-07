@@ -303,17 +303,17 @@ allow_unsupported_distribution_setup: false
 #    mirrors:
 #      - host: <docker-repository>
 #        capabilities: ["pull", "resolve"]
-#        skip_verify: false
+#        skip_verify: true
 #  - prefix: registry.k8s.io
 #    mirrors:
 #      - host: <k8s-repository>
 #        capabilities: ["pull", "resolve"]
-#        skip_verify: false
+#        skip_verify: true
 #  - prefix: quay.io
 #    mirrors:
 #      - host: <quay-repository>
 #        capabilities: ["pull", "resolve"]
-#        skip_verify: false
+#        skip_verify: true
 ```
 
 
@@ -370,17 +370,17 @@ containerd_registries_mirrors:
     mirrors:
       - host: http://192.168.106.12:8082
         capabilities: ["pull", "resolve"]
-        skip_verify: false
+        skip_verify: true
   - prefix: registry.k8s.io
     mirrors:
       - host: http://192.168.106.12:8084
         capabilities: ["pull", "resolve"]
-        skip_verify: false
+        skip_verify: true
   - prefix: quay.io
     mirrors:
       - host: http://192.168.106.12:8083
         capabilities: ["pull", "resolve"]
-        skip_verify: false
+        skip_verify: true
 
 # containerd_max_container_log_line_size: 16384
 
@@ -1389,7 +1389,7 @@ kubectl label nodes <wr-node> node-role.kubernetes.io/worker=true
 
 ## Step 16: config kubectx and kubens
 
-```
+```diff
 curl -o kubectx.zip https://github.com/ahmetb/kubectx/archive/refs/heads/master.zip
 uzip kubectx.zip
 
@@ -1405,4 +1405,10 @@ alias ctx='kubectx'
 alias kns='kubens'
 
 EOF
+```
+
+## Step 17: snapshot etcd
+
+```diff
+
 ```
