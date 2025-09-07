@@ -1385,3 +1385,24 @@ kubectl taint nodes <cp-node> node-role.kubernetes.io/etcd=true:NoExecute
 
 kubectl label nodes <wr-node> node-role.kubernetes.io/worker=true
 ```
+
+
+## Step 16: config kubectx and kubens
+
+```
+curl -o kubectx.zip https://github.com/ahmetb/kubectx/archive/refs/heads/master.zip
+uzip kubectx.zip
+
+cp kubectx /usr/local/bin
+cp kubens /usr/local/bin
+
+cp inventory/<cluster-name>/artifacts/admin.conf ~/.kube/clustername-admin.conf
+
+cat << 'EOF' | sudo tee -a ~/.bashrc >/dev/null
+
+export KUBECONFIG=~/.kube/clustername-admin.conf:~/.kube/clustername-admin.conf
+alias ctx='kubectx'
+alias kns='kubens'
+
+EOF
+```
