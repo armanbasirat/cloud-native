@@ -1,4 +1,4 @@
-```
+```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -9,7 +9,7 @@ rules:
   verbs: ["get", "list", "watch"]
 ```
 
-```
+```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -24,7 +24,7 @@ subjects:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-```
+```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -38,7 +38,7 @@ rules:
   verbs: ["get", "list", "watch"]
 ```
 
-```
+```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
