@@ -1,3 +1,5 @@
+#### create ippool
+
 ```
 apiVersion: crd.projectcalico.org/v1
 kind: IPPool
@@ -11,6 +13,7 @@ spec:
   vxlanMode: Always
   nodeSelector: "!all()"
 ```
+### annotate namespace with specific ippool
 
 ```
 apiVersion: v1
