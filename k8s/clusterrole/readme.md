@@ -1,3 +1,5 @@
+### namespace ClusterRole
+
 ```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -8,6 +10,8 @@ rules:
   resources: ["namespaces"]
   verbs: ["get", "list", "watch"]
 ```
+
+### namespace ClusterRoleBinding
 
 ```diff
 apiVersion: rbac.authorization.k8s.io/v1
@@ -20,9 +24,41 @@ roleRef:
   name: ns-cr
 subjects:
 - kind: User
-  name: u-oxpwd         # Replace with the actual user name
+  name: <user-id>
   apiGroup: rbac.authorization.k8s.io
 ```
+
+### calico ippool ClusterRole
+
+```diff
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: calico-ippool-cr
+rules:
+- apiGroups: ["crd.projectcalico.org"]
+  resources: ["ippools"]
+  verbs: ["get", "list", "watch", "create", "update", "delete"]
+```
+
+### calico ippool ClusterRoleBinding
+
+```diff
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: calico-ippool-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-ippool-cr
+subjects:
+- kind: User
+  name: <user-id>
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### cluster metrics ClusterRole
 
 ```diff
 apiVersion: rbac.authorization.k8s.io/v1
@@ -38,6 +74,8 @@ rules:
   verbs: ["get", "list", "watch"]
 ```
 
+### cluster metrics ClusterRoleBinding
+
 ```diff
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -49,6 +87,9 @@ roleRef:
   name: cluster-metrics-cr
 subjects:
 - kind: User
-  name: u-oxpwd         # Replace with the actual user name
+  name: <user-id>
   apiGroup: rbac.authorization.k8s.io
 ```
+
+
+
