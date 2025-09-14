@@ -121,3 +121,82 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: filebeat
+  name: mw-filebeat
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: mw-filebeat
+subjects:
+- kind: ServiceAccount
+  name: mw-sa
+  namespace: <ns-name>
+```
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: filebeat
+  name: mw-filebeat
+rules:
+- apiGroups: [""]
+  resources:
+  - namespaces
+  - pods
+  - nodes
+  - nodes/stats
+  - nodes/metrics
+  - pods/metrics
+  - pods/stats
+  - events
+  - services
+  - configmaps
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups: ["extensions"]
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups: ["coordination.k8s.io"]
+  resources:
+  - leases
+  verbs:
+  - get
+  - create
+  - update
+- apiGroups: ["apps"]
+  resources:
+  - statefulsets
+  - deployments
+  - replicasets
+  - daemonsets
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources:
+  - clusterrolebindings
+  - clusterroles
+  - rolebidnings
+  - roles
+  verbs:
+  - get
+  - watch
+  - list
+- nonResourceURLs: ["/metrics", "/stats", "/stats/summary"]
+  verbs: ["get"]
+
+```
