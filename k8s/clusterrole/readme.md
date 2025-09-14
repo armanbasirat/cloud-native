@@ -111,11 +111,11 @@ metadata:
   namespace: <ns-name>
 subjects:
 - kind: User
-  name: u-qfxsd
+  name: <user-id>
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
-  name: core-online-keda
+  name: <ns-name>-keda
   apiGroup: rbac.authorization.k8s.io
 ```
 
