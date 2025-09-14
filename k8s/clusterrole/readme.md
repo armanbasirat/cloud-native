@@ -91,5 +91,31 @@ subjects:
   apiGroup: rbac.authorization.k8s.io
 ```
 
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: <ns-name>-keda
+  namespace: <ns-name>
+rules:
+- apiGroups: ["keda.sh"]
+  resources: ["*"]
+  verbs: ["*"]
+```
 
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: <ns-name>-keda
+  namespace: <ns-name>
+subjects:
+- kind: User
+  name: u-qfxsd
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: core-online-keda
+  apiGroup: rbac.authorization.k8s.io
+```
 
