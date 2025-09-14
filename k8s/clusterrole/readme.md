@@ -55,6 +55,10 @@ roleRef:
 subjects:
 - kind: User
   name: <user-id>
+- kind: Group
+  name: system:authenticated
+- kind: Group
+  name: "activedirectory_group://CN=group-1,OU=groups,DC=test,DC=local"
   apiGroup: rbac.authorization.k8s.io
 ```
 
