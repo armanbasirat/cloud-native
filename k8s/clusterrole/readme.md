@@ -97,10 +97,9 @@ subjects:
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
-  name: <ns-name>-keda
-  namespace: <ns-name>
+  name: keda-cr
 rules:
 - apiGroups: ["keda.sh"]
   resources: ["*"]
@@ -109,17 +108,16 @@ rules:
 
 ```
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: <ns-name>-keda
-  namespace: <ns-name>
+  name: keda-crb
 subjects:
 - kind: User
   name: <user-id>
   apiGroup: rbac.authorization.k8s.io
 roleRef:
-  kind: Role
-  name: <ns-name>-keda
+  kind: ClusterRole
+  name: keda-cr
   apiGroup: rbac.authorization.k8s.io
 ```
 
