@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  filebeat:
+    image: elastic/filebeat:8.18.8
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 128M
+    container_name: filebeat
+    user: root
+    restart: always
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /app/workspace/nginx/data/logs/:/var/log/nginx/:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

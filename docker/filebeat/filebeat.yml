@@ -1,0 +1,37 @@
+filebeat.inputs:
+  - type: filestream
+    enabled: true
+    paths:
+      - /var/log/nginx/*.log
+    fields:
+      source: nginx
+    fields_under_root: true
+
+processors:
+
+  - if:
+      not:
+        or:
+          - regexp:
+              log.file.path: "/var/log/nginx/warn.*"
+          - regexp:
+              log.file.path: "/var/log/nginx/error.*"
+          - regexp:
+              log.file.path: "/var/log/nginx/debug.*"
+    then:
+      - dissect:
+          tokenizer: "[%{client_ip}] - [%{remote_user}] [%{timestamp}] [\"%{request}\"] [%{bytes_sent}] [\"%{referer}\"] [\"%{user_agent}\"] [\"%{x_forwarded_for}\"] [%{upstream_addr}] [%{status}] [\"%{upstream_response_time}\"] [\>
+          field: "message"
+          target_prefix: "nginx.access"
+
+      - convert:
+          fields:
+            - {from: "nginx.access.status", to: "nginx.access.status", type: "integer"}
+            - {from: "nginx.access.bytes_sent", to: "nginx.access.bytes_sent", type: "integer"}
+            - {from: "nginx.access.upstream_response_time", to: "nginx.access.upstream_response_time", type: "float"}
+            - {from: "nginx.access.request_time", to: "nginx.access.request_time", type: "float"}
+            - {from: "nginx.access.request_length", to: "nginx.access.request_length", type: "integer"}
+
+output.logstash:
+  hosts: ["192.168.1.250:6441"]
+  index: nginx-lb

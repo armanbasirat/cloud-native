@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: filebeat
+  namespace: filebeat
+  labels:
+    k8s-app: filebeat
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: filebeat
+  labels:
+    k8s-app: filebeat
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "namespaces", "nodes"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: filebeat
+subjects:
+  - kind: ServiceAccount
+    name: filebeat
+    namespace: filebeat
+roleRef:
+  kind: ClusterRole
+  name: filebeat
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+  namespace: filebeat
+  labels:
+    k8s-app: filebeat
+data:
+  filebeat.yml: |-
+    filebeat.autodiscover:
+      providers:
+        - type: kubernetes
+          node: ${NODE_NAME}
+          hints.enabled: true
+          hints.default_config:
+            type: container
+            paths:
+              - /var/log/containers/*${data.kubernetes.container.id}.log
+
+    processors:
+
+      - dissect:
+          tokenizer: '%{remote_addr} - %{remote_user} [%{time_local}] "%{request}" %{status} %{bytes_sent} "%{http_referer}" "%{http_user_agent}" %{request_length} %{request_time} [%{upstream_service}] [%{upstream_response_headers}]'
+          field: "message"
+          target_prefix: "ingress.nginx"
+      - convert:
+          fields:
+            - {from: "ingress.nginx.status", to: "ingress.nginx.status", type: "integer"}
+            - {from: "ingress.nginx.bytes_sent", to: "ingress.nginx.bytes_sent", type: "integer"}
+            - {from: "ingress.nginx.request_time", to: "ingress.nginx.request_time", type: "float"}
+            - {from: "ingress.nginx.upstream_response_time", to: "ingress.nginx.upstream_response_time", type: "float"}
+            - {from: "ingress.nginx.request_length", to: "ingress.nginx.request_length", type: "integer"}
+            - {from: "ingress.nginx.upstream_bytes", to: "ingress.nginx.upstream_bytes", type: "integer"}
+
+      - add_host_metadata: {}
+      - add_cloud_metadata: {}
+      - add_kubernetes_metadata:
+          in_cluster: true
+          host: ${NODE_NAME}
+          matchers:
+            - logs_path:
+                logs_path: "/var/log/containers/"
+      - add_fields:
+          target: ''
+          fields:
+            cluster: ${CLUSTER_NAME}
+
+    output.logstash:
+      hosts: ["192.168.1.250:6441"]
+      ssl.enabled: false
+      index: "k8s-test-cluster"
+
+    setup.template.name: "elk-k8s"
+    setup.template.pattern: "elk-k8s-*"
+    setup.ilm.enabled: false
+
+    logging:
+      level: info
+      to_files: true
+      files:
+        path: /var/log/filebeat
+        name: filebeat
+        keepfiles: 7
+        permissions: 0644
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: filebeat
+  namespace: filebeat
+  labels:
+    k8s-app: filebeat
+spec:
+  selector:
+    matchLabels:
+      k8s-app: filebeat
+  template:
+    metadata:
+      labels:
+        k8s-app: filebeat
+    spec:
+      serviceAccountName: filebeat
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      containers:
+        - name: filebeat
+          image: 10.110.7.212:8100/elastic/filebeat:8.18.8
+          args: ["-c", "/etc/filebeat.yml", "-e"]
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: CLUSTER_NAME
+              value: "k8s-vinfra-cluster"
+          securityContext:
+            runAsUser: 0
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/filebeat.yml
+              subPath: filebeat.yml
+            - name: varlog
+              mountPath: /var/log
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: filebeat-config
+            defaultMode: 0600
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
