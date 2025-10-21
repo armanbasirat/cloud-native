@@ -130,7 +130,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: CLUSTER_NAME
-              value: "k8s-vinfra-cluster"
+              value: "k8s-test-cluster"
           securityContext:
             runAsUser: 0
           resources:
