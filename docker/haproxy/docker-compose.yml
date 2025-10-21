@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  haproxy:
+    image: 10.110.7.212:8100/haproxy:3.2.6
+    container_name: haproxy
+    ports:
+      - "6443:6443"   # API traffic
+      - "8404:8404"   # HAProxy dashboard
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "5"
+    networks:
+      - haproxy-net
+
+networks:
+  haproxy-net:
+    driver: bridge
