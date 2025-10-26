@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  nexus:
+    image: sonatype/nexus3:3.85.0
+    container_name: nexus
+    volumes:
+      - nexus-data:/nexus-data
+      - nexus-data:/sonatype/nexus3
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+      - "8083:8083"
+      - "8084:8084"
+      - "8085:8085"
+    restart: always
+volumes:
+  nexus-data:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: /app/nexus-data
