@@ -129,3 +129,131 @@ kubectl apply -f cephfs-deployment.yml
 kubectl get pods
 kubectl get pvc
 ```
+
+
+
+```diff
+cat << 'EOF' > cephfs-dd.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cephfs-dd-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: csi-cephfs-sc
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cephfs-dd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cephfs-dd
+  template:
+    metadata:
+      labels:
+        app: cephfs-dd
+    spec:
+      containers:
+      - name: cephfs-dd
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "=== Testing CephFS Mount ==="
+            df -h /mnt/cephfs || true
+            echo "=== Write Test ==="
+            dd if=/dev/zero of=/mnt/cephfs/testfile bs=1M count=100 oflag=direct
+            echo "=== Read Test ==="
+            dd if=/mnt/cephfs/testfile of=/dev/null bs=1M iflag=direct
+            echo "=== Listing Files ==="
+            ls -lh /mnt/cephfs
+            echo "=== Test Complete ==="
+            sleep 3600
+        volumeMounts:
+        - name: cephfs-dd-vol
+          mountPath: /mnt/cephfs
+      volumes:
+      - name: cephfs-dd-vol
+        persistentVolumeClaim:
+          claimName: cephfs-dd-pvc
+EOF
+```
+
+```diff
+kubectl apply -f cephfs-dd.yml
+
+kubectl get pods
+kubectl get pvc
+```
+
+
+```diff
+cat << 'EOF' > cephfs-fio.yml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cephfs-fio-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: csi-cephfs-sc
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cephfs-fio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cephfs-fio
+  template:
+    metadata:
+      labels:
+        app: cephfs-fio
+    spec:
+      containers:
+      - name: cephfs-fio
+        image: ljishen/fio
+        command: ["fio"]
+        args:
+          - "--name=cephfs-dd"
+          - "--directory=/mnt/cephfs"
+          - "--rw=randrw"
+          - "--bs=4k"
+          - "--size=512M"
+          - "--numjobs=4"
+          - "--runtime=60"
+          - "--time_based"
+          - "--group_reporting"
+        volumeMounts:
+        - name: cephfs-fio-vol
+          mountPath: /mnt/cephfs
+      volumes:
+      - name: cephfs-fio-vol
+        persistentVolumeClaim:
+          claimName: cephfs-fio-pvc
+EOF
+```
+
+
+```diff
+kubectl apply -f cephfs-fio.yml
+
+kubectl get pods
+kubectl get pvc
+```
