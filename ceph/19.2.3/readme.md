@@ -145,7 +145,7 @@ apt install -y ceph-common
 ### bootstrap new cluster
 
 ```
-cephadm bootstrap --mon-ip <mon1-ip> \
+cephadm --image <quay-repository>/ceph/ceph:v19 bootstrap --mon-ip <mon1-ip> \
 --allow-fqdn-hostname \
 --initial-dashboard-user admin \
 --initial-dashboard-password P@ssw0rd \
