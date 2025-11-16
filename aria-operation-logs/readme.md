@@ -1,0 +1,1 @@
+https://techdocs.broadcom.com/us/en/vmware-cis/aria/aria-operations-for-logs/8-18/aria-operations-for-logs-8-18/integrating-vrealize-log-insight-with-vmware-products/connect-log-insight-to-a-vcenter-server.html
