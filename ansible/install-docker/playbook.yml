@@ -1,0 +1,5 @@
+- name: Install and configure Docker using docker.io package
+  hosts: ceph_servers
+  become: true
+  roles:
+    - docker
