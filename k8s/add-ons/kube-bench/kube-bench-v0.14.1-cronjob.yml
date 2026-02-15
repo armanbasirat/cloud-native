@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: kube-bench
-  namespace: 
+  namespace: <namespace-name>
 spec:
   schedule: "1 * * * *"
   suspend: true
