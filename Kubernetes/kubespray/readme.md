@@ -10,6 +10,12 @@
 
 ### update all k8s nodes
 
+```diff
+- This is a red colored line
++ This is a green colored line
+@@ This is a purple colored line @@
+```
+
 ```
 apt update
 apt upgrade -y
