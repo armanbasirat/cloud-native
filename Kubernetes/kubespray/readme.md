@@ -1,8 +1,8 @@
-<span style="color:red">This is red</span>
+
 <p align="center" width="100%">
     <img width="15%" src="https://github.com/kubernetes/kubernetes/blob/master/logo/logo_with_border.png"> 
 </p>
-
+<span style="color:red">This is red</span>
 # Deploy a Production Ready Kubernetes Cluster with [Kubespray](https://github.com/kubernetes-sigs/kubespray/tree/master)
 
 ## Step 01: preparing os and servers
