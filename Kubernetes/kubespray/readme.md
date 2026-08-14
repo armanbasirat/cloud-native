@@ -2,8 +2,7 @@
 <p align="center" width="100%">
     <img width="15%" src="https://github.com/kubernetes/kubernetes/blob/master/logo/logo_with_border.png"> 
 </p>
-> [!NOTE]
-> This is informational.
+
 # Deploy a Production Ready Kubernetes Cluster with [Kubespray](https://github.com/kubernetes-sigs/kubespray/tree/master)
 
 ## Step 01: preparing os and servers
@@ -12,7 +11,7 @@
 ### update all k8s nodes
 
 ```
-apt update
+- apt update
 apt upgrade -y
 ```
 
