@@ -16,8 +16,8 @@
 @@ This is a purple colored line @@
 ```
 
-```
-apt update
+```diff
+- apt update
 apt upgrade -y
 ```
 
