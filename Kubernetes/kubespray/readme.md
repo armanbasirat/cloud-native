@@ -11,7 +11,8 @@
 ### update all k8s nodes
 
 ```
-- apt update
+> [!NOTE]
+apt update
 apt upgrade -y
 ```
 
