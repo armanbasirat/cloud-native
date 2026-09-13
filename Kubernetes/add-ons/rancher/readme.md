@@ -48,7 +48,7 @@ ldapsearch -x -D "acme\jdoe" -H ldap://ad.acme.com:389 -b "dc=acme,dc=com" -s su
 
 
 
-## Expand Rancher certificate to 'five' years
+## step 04: Expand Rancher certificate to 'five' years
 
 ```
 k -n cattle-system edit certificate tls-rancher-ingress
