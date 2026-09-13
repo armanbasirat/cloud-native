@@ -1,3 +1,4 @@
+
 <p align="center" width="100%">
     <img width="15%" src="https://github.com/kubernetes/kubernetes/blob/master/logo/logo_with_border.png"> 
 </p>
@@ -9,7 +10,8 @@
 
 ### update all k8s nodes
 
-```
+
+```diff
 apt update
 apt upgrade -y
 ```
