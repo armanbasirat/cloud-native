@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cephfs-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cephfs-demo
+  template:
+    metadata:
+      labels:
+        app: cephfs-demo
+    spec:
+      containers:
+        - name: web-server
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: mypvc
+              mountPath: /var/lib/www/html
+      volumes:
+        - name: mypvc
+          persistentVolumeClaim:
+            claimName: cephfs-pvc
+            readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cephfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-cephfs-sc

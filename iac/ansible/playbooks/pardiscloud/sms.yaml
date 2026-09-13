@@ -1,0 +1,7 @@
+- name: sms agent prepare for pardis cloud
+  hosts: test_hosts
+  become: true
+
+  roles:
+    - ./roles/pardiscloud/repository
+    - ./roles/pardiscloud/network

@@ -1,0 +1,12 @@
+- name: Rename VMware netplan config to Ubuntu installer config
+  ansible.builtin.command:
+    cmd: mv /etc/netplan/99-netcfg-vmware.yaml /etc/netplan/00-installer-config.yaml
+    creates: /etc/netplan/00-installer-config.yaml
+    removes: /etc/netplan/99-netcfg-vmware.yaml
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_facts['os_family'] == "Debian"
+
+- name: Apply netplan
+  ansible.builtin.command:
+    cmd: netplan apply

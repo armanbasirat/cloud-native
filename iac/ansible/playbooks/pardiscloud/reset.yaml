@@ -1,0 +1,6 @@
+- name: rollback sms agent changes
+  hosts: test_hosts
+  become: true
+
+  roles:
+    - ./roles/pardiscloud/repository-reset

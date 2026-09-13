@@ -45,3 +45,44 @@ kubectl -n cattle-system get deploy rancher
 ```
 ldapsearch -x -D "acme\jdoe" -H ldap://ad.acme.com:389 -b "dc=acme,dc=com" -s sub "sAMAccountName=jdoe"
 ```
+
+
+
+## Expand Rancher cert to 'five' years
+
+```
+k -n cattle-system edit certificate tls-rancher-ingress
+```
+
+#### append these two values in 'spec'
+
+duration: 43800h
+renewBefore: 720h
+
+
+```
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-rancher-ingress
+  namespace: cattle-system
+spec:
+  dnsNames:
+  - rancher.test.local
+  duration: 43800h
+  renewBefore: 720h
+  issuerRef:
+    group: cert-manager.io
+    kind: Issuer
+    name: rancher
+  secretName: tls-rancher-ingress
+  usages:
+  - digital signature
+  - key encipherment
+```
+
+#### Delete existing certificate (Cert manager will create new certificate)
+
+```
+k -n cattle-system delete secret tls-rancher-ingress
+```

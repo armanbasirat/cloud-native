@@ -1,0 +1,74 @@
+- name: Add pardiscloud hosts to /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    marker: "# {mark} ANSIBLE MANAGED PardisCloud HOSTS"
+    block: |
+      {% if ansible_distribution == 'Ubuntu' %}
+      10.100.8.120   archive.ubuntu.com
+      {% elif ansible_distribution == 'OracleLinux' %}
+      10.100.8.120   yum.oracle.com
+      {% endif %}
+      {% for host in pardiscloud_hosts %}
+      {{ host.ip }} {{ host.hostname }}
+      {% endfor %}
+    create: true
+
+- name: Install rsync on Ubuntu
+  ansible.builtin.apt:
+    name: rsync
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install rsync on Oracle Linux
+  ansible.builtin.dnf:
+    name: rsync
+    state: present
+  when: ansible_distribution == "OracleLinux"
+
+
+- name: Configure APT repositories on Ubuntu
+  when: ansible_distribution == "Ubuntu"
+  block:
+
+    - name: Backup existing sources.list
+      ansible.builtin.copy:
+        src: /etc/apt/sources.list
+        dest: /etc/apt/sources.list.bak
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Disable original sources.list
+      ansible.builtin.command:
+        cmd: mv /etc/apt/sources.list /etc/apt/sources.list.disabled
+      args:
+        creates: /etc/apt/sources.list.disabled
+
+    - name: Find existing APT repository files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns:
+          - "*.list"
+          - "*.sources"
+        file_type: file
+      register: apt_source_files
+
+    - name: Disable all existing repository files
+      ansible.builtin.command:
+        cmd: mv "{{ item.path }}" "{{ item.path }}.disabled"
+      loop: "{{ apt_source_files.files }}"
+      when: not item.path.endswith('/pardis-cloud.list')
+
+    - name: Install Pardis Cloud repository
+      ansible.builtin.template:
+        src: pardis-cloud.list.j2
+        dest: /etc/apt/sources.list.d/pardis-cloud.list
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Update APT cache from Pardis Cloud only
+      ansible.builtin.apt:
+        update_cache: true

@@ -1,0 +1,15 @@
+pardiscloud_hosts:
+  - ip: 192.168.46.249
+    hostname: sms.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.249
+    hostname: iam-pub.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.249
+    hostname: ecs.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.249
+    hostname: vpc.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.249
+    hostname: evs.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.249
+    hostname: ims.me-ptp-1.mypardiscloud.com
+  - ip: 192.168.46.251
+    hostname: obs.me-ptp-1.mypardiscloud.com

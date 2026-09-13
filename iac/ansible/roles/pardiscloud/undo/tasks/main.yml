@@ -1,0 +1,42 @@
+- name: Remove pardiscloud hosts from /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    marker: "# {mark} ANSIBLE MANAGED PardisCloud HOSTS"
+    state: absent
+    
+- name: Restore APT repositories on Ubuntu
+  when: ansible_distribution == "Ubuntu"
+  become: true
+  block:
+
+    - name: Remove Pardis Cloud repository
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/pardis-cloud.list
+        state: absent
+
+    - name: Restore original sources.list
+      ansible.builtin.copy:
+        src: /etc/apt/sources.list.bak
+        dest: /etc/apt/sources.list
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Find disabled APT repository files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns:
+          - "*.list.disabled"
+          - "*.sources.disabled"
+        file_type: file
+      register: disabled_apt_sources
+
+    - name: Restore disabled APT repository files
+      ansible.builtin.command:
+        cmd: mv "{{ item.path }}" "{{ item.path | regex_replace('\.disabled$', '') }}"
+      loop: "{{ disabled_apt_sources.files }}"
+
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: true
