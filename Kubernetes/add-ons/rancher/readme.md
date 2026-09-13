@@ -54,12 +54,14 @@ ldapsearch -x -D "acme\jdoe" -H ldap://ad.acme.com:389 -b "dc=acme,dc=com" -s su
 k -n cattle-system edit certificate tls-rancher-ingress
 ```
 
-#### append these two values in 'spec'
+#### Append these two values in 'spec'
 
 ```
 duration: 43800h
 renewBefore: 720h
 ```
+
+#### Example
 
 ```
 apiVersion: cert-manager.io/v1
